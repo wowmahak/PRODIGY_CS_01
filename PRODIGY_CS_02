@@ -1,0 +1,44 @@
+from PIL import Image
+import numpy as np
+
+def encrypt_image(image_path, key, output_path):
+    # Load the image
+    image = Image.open(image_path)
+    image = image.convert('RGB')
+    pixels = np.array(image)
+    
+    # Apply XOR operation with key
+    key = np.array(key, dtype=np.uint8)
+    encrypted_pixels = pixels ^ key
+    
+    # Save the encrypted image
+    encrypted_image = Image.fromarray(encrypted_pixels)
+    encrypted_image.save(output_path)
+    print(f'Image encrypted and saved as {output_path}')
+
+def decrypt_image(encrypted_image_path, key, output_path):
+    # Load the encrypted image
+    image = Image.open(encrypted_image_path)
+    image = image.convert('RGB')
+    pixels = np.array(image)
+    
+    # Apply XOR operation with key to decrypt
+    key = np.array(key, dtype=np.uint8)
+    decrypted_pixels = pixels ^ key
+    
+    # Save the decrypted image
+    decrypted_image = Image.fromarray(decrypted_pixels)
+    decrypted_image.save(output_path)
+    print(f'Image decrypted and saved as {output_path}')
+
+def main():
+    key = [50, 100, 150]  # Example key for XOR operation; ensure it's the same for both encryption and decryption
+    
+    # Encrypt the image
+    encrypt_image('input_image.jpg', key, 'encrypted_image.jpg')
+    
+    # Decrypt the image
+    decrypt_image('encrypted_image.jpg', key, 'decrypted_image.jpg')
+
+if __name__ == '__main__':
+    main()
